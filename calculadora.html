@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Orçamento | RC Suporte - Cabeamento e CFTV</title>
+    <meta name="description" content="Calcule o orçamento estimado para seu projeto de cabeamento estruturado, CFTV ou projetos de elétrica. Ferramenta gratuita e fácil de usar.">
+    <meta name="keywords" content="calculadora orçamento, preço cabeamento, custo CFTV, orçamento projetos de elétrica, estimativa projeto TI">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .calculator-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .calculator-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white-color);
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .calculator-form {
+            padding: 40px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid var(--light-color);
+            border-radius: 8px;
+        }
+        
+        .form-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-color);
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid var(--light-color);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-item:hover {
+            background-color: #f8f9fa;
+            border-color: var(--secondary-color);
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        
+        .results-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 30px;
+            margin-top: 30px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .estimate-total {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .estimate-range {
+            font-size: 1.2rem;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+        }
+        
+        .disclaimer {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            margin-top: 20px;
+        }
+        
+        .contact-cta {
+            background: var(--secondary-color);
+            color: var(--white-color);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        
+        .contact-cta:hover {
+            background-color: #008cbf;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="rcsuporte.png" alt="RC Suporte - Logo">
+            </a>
+            <nav class="main-nav">
+                <a href="index.html#servicos">Serviços</a>
+                <a href="solucoes.html">Soluções</a>
+                <a href="sobre.html">Sobre Nós</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="contato.html">Contato</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="service-hero">
+            <div class="container">
+                <h1>Calculadora de Orçamento</h1>
+                <p>Obtenha uma estimativa personalizada para seu projeto de infraestrutura de TI</p>
+            </div>
+        </section>
+
+        <section class="section-padding">
+            <div class="container">
+                <div class="calculator-container">
+                    <div class="calculator-header">
+                        <h2>Calcule seu Projeto</h2>
+                        <p>Preencha as informações abaixo para receber uma estimativa precisa</p>
+                    </div>
+                    
+                    <form class="calculator-form" id="calculatorForm">
+                        <!-- Informações Básicas -->
+                        <div class="form-section">
+                            <h3>📋 Informações do Projeto</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="projectType">Tipo de Projeto:</label>
+                                    <select id="projectType" name="projectType" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="cabeamento">Cabeamento Estruturado</option>
+                                        <option value="cftv">Sistema CFTV</option>
+                                        <option value="eletrica">Projetos de Elétrica</option>
+                                        <option value="wifi">Wi-Fi Corporativo</option>
+                                        <option value="completo">Projeto Completo</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="area">Área Total (m²):</label>
+                                    <input type="number" id="area" name="area" min="1" placeholder="Ex: 500" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="pontos" id="labelPontos">Quantidade de Pontos de Rede:</label>
+                                    <input type="number" id="pontos" name="pontos" min="1" placeholder="Ex: 50" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="segmento">Segmento:</label>
+                                    <select id="segmento" name="segmento" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="corporativo">Corporativo</option>
+                                        <option value="industrial">Industrial</option>
+                                        <option value="educacional">Educacional</option>
+                                        <option value="hospitalar">Hospitalar</option>
+                                        <option value="hoteleiro">Hoteleiro</option>
+                                        <option value="residencial">Residencial</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Especificações Técnicas -->
+                        <div class="form-section">
+                            <h3>⚙️ Especificações Técnicas</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="categoria">Categoria do Cabo:</label>
+                                    <select id="categoria" name="categoria">
+                                        <option value="cat5e">CAT 5e</option>
+                                        <option value="cat6" selected>CAT 6</option>
+                                        <option value="cat6a">CAT 6A</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="certificacao">Certificação Necessária:</label>
+                                    <select id="certificacao" name="certificacao">
+                                        <option value="nao">Não</option>
+                                        <option value="sim" selected>Sim - Fluke</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fornecimento de Materiais -->
+                        <div class="form-section">
+                            <h3>📦 Fornecimento de Materiais</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="fornecimento">Opção de Fornecimento:</label>
+                                    <select id="fornecimento" name="fornecimento" required>
+                                        <option value="completo" selected>RC Suporte fornece tudo (Turnkey)</option>
+                                        <option value="cliente">Cliente fornece materiais</option>
+                                        <option value="hibrido">Híbrido (Cliente fornece equipamentos ativos)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <div id="fornecimentoInfo" style="padding: 15px; background: #f8f9fa; border-radius: 6px; margin-top: 10px;">
+                                        <strong>Turnkey - RC Suporte fornece tudo:</strong><br>
+                                        • Cabos e conectores<br>
+                                        • Patch panels e organizadores<br>
+                                        • Switches e equipamentos ativos<br>
+                                        • Eletrocalhas e infraestrutura<br>
+                                        • Mão de obra especializada<br>
+                                        • Garantia total do projeto
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Serviços Adicionais -->
+                        <div class="form-section">
+                            <h3>➕ Serviços Adicionais</h3>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="servicos[]" value="rack">
+                                    <span>Rack e Organização</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="servicos[]" value="cameras">
+                                    <span>Câmeras de Segurança</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="servicos[]" value="wifi">
+                                    <span>Access Points Wi-Fi</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="servicos[]" value="suporte">
+                                    <span>Contrato de Suporte</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Urgência do Projeto -->
+                        <div class="form-section">
+                            <h3>⏱️ Prazo do Projeto</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="urgencia">Urgência:</label>
+                                    <select id="urgencia" name="urgencia">
+                                        <option value="normal">Normal (30-45 dias)</option>
+                                        <option value="rapido">Rápido (15-30 dias)</option>
+                                        <option value="urgente">Urgente (até 15 dias)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botão de Calcular -->
+                        <div style="text-align: center;">
+                            <button type="button" onclick="calcularOrcamento()" class="cta-button" style="font-size: 1.2rem; padding: 15px 40px;">
+                                🧮 Calcular Orçamento
+                            </button>
+                        </div>
+
+                        <!-- Resultados -->
+                        <div id="resultados" class="results-section" style="display: none;">
+                            <div class="estimate-total" id="valorTotal">R$ 0,00</div>
+                            <div class="estimate-range" id="faixaValor">Faixa estimada: R$ 0,00 - R$ 0,00</div>
+                            
+                            <div style="margin: 20px 0;">
+                                <strong>Breakdown do Orçamento:</strong>
+                                <div id="breakdown" style="text-align: left; margin-top: 10px;"></div>
+                            </div>
+                            
+                            <a href="contato.html" class="contact-cta">
+                                📞 Solicitar Orçamento Detalhado
+                            </a>
+                            
+                            <div class="disclaimer">
+                                * Valores estimados baseados em projetos similares. O orçamento final pode variar conforme especificações detalhadas, condições do local e customizações necessárias.
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer-dark">
+        <div class="container">
+            <p>&copy; 2024 RC Suporte. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Função para atualizar o label baseado no tipo de projeto
+        document.getElementById('projectType').addEventListener('change', function() {
+            const projectType = this.value;
+            const labelPontos = document.getElementById('labelPontos');
+            const inputPontos = document.getElementById('pontos');
+            
+            if (projectType === 'cftv') {
+                labelPontos.textContent = 'Quantidade de Câmeras:';
+                inputPontos.placeholder = 'Ex: 20';
+            } else if (projectType === 'wifi') {
+                labelPontos.textContent = 'Quantidade de Access Points:';
+                inputPontos.placeholder = 'Ex: 15';
+            } else if (projectType === 'fibra') {
+                labelPontos.textContent = 'Quantidade de Pontos de Fibra:';
+                inputPontos.placeholder = 'Ex: 10';
+            } else {
+                labelPontos.textContent = 'Quantidade de Pontos de Rede:';
+                inputPontos.placeholder = 'Ex: 50';
+            }
+        });
+
+        // Função para atualizar informações de fornecimento
+        document.getElementById('fornecimento').addEventListener('change', function() {
+            const fornecimento = this.value;
+            const infoDiv = document.getElementById('fornecimentoInfo');
+            
+            if (fornecimento === 'completo') {
+                infoDiv.innerHTML = `
+                    <strong>Turnkey - RC Suporte fornece tudo:</strong><br>
+                    • Cabos e conectores<br>
+                    • Patch panels e organizadores<br>
+                    • Switches e equipamentos ativos<br>
+                    • Eletrocalhas e infraestrutura<br>
+                    • Mão de obra especializada<br>
+                    • Garantia total do projeto
+                `;
+            } else if (fornecimento === 'cliente') {
+                infoDiv.innerHTML = `
+                    <strong>Cliente fornece materiais:</strong><br>
+                    • RC Suporte fornece mão de obra + materiais básicos<br>
+                    • Cliente compra equipamentos principais<br>
+                    • RC Suporte especifica lista de materiais<br>
+                    • Valor reduzido (sem equipamentos ativos)<br>
+                    • Garantia na instalação e materiais básicos
+                `;
+            } else if (fornecimento === 'hibrido') {
+                infoDiv.innerHTML = `
+                    <strong>Modelo Híbrido:</strong><br>
+                    • RC Suporte fornece: cabos, conectores, infraestrutura<br>
+                    • Cliente fornece: switches, roteadores, servers<br>
+                    • Ideal para empresas com padrão específico<br>
+                    • Valor reduzido (sem equipamentos ativos)<br>
+                    • Garantia compartilhada
+                `;
+            }
+        });
+
+        function calcularOrcamento() {
+            // Obter valores do formulário
+            const projectType = document.getElementById('projectType').value;
+            const area = parseInt(document.getElementById('area').value) || 0;
+            const pontos = parseInt(document.getElementById('pontos').value) || 0;
+            const categoria = document.getElementById('categoria').value;
+            const certificacao = document.getElementById('certificacao').value;
+            const urgencia = document.getElementById('urgencia').value;
+            const segmento = document.getElementById('segmento').value;
+            const fornecimento = document.getElementById('fornecimento').value;
+            
+            // Validação básica
+            if (!projectType || area <= 0 || pontos <= 0) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            // Preços base por ponto
+            const precoBase = {
+                'cat5e': 120,
+                'cat6': 130,
+                'cat6a': 150
+            };
+            
+            // Multiplicadores por tipo de projeto
+            const multiplicadorProjeto = {
+                'cabeamento': 1.0,
+                'cftv': 1.3,
+                'fibra': 1.8,
+                'wifi': 1.2,
+                'completo': 2.2
+            };
+            
+            // Multiplicadores por segmento
+            const multiplicadorSegmento = {
+                'corporativo': 1.0,
+                'industrial': 1.3,
+                'educacional': 0.9,
+                'hospitalar': 1.4,
+                'hoteleiro': 1.2,
+                'residencial': 0.8
+            };
+            
+            // Multiplicadores por urgência
+            const multiplicadorUrgencia = {
+                'normal': 1.0,
+                'rapido': 1.15,
+                'urgente': 1.3
+            };
+            
+            // Cálculo base
+            let valorBase = pontos * precoBase[categoria];
+            valorBase *= multiplicadorProjeto[projectType];
+            valorBase *= multiplicadorSegmento[segmento];
+            valorBase *= multiplicadorUrgencia[urgencia];
+            
+            // Certificação
+            if (certificacao === 'sim') {
+                valorBase += pontos * 30; // R$ 30 por ponto para certificação
+            }
+            
+            // Serviços adicionais
+            const servicosExtras = document.querySelectorAll('input[name="servicos[]"]:checked');
+            let valorExtras = 0;
+            
+            servicosExtras.forEach(servico => {
+                switch(servico.value) {
+                    case 'rack':
+                        valorExtras += 2500;
+                        break;
+                    case 'cameras':
+                        valorExtras += pontos * 150;
+                        break;
+                    case 'wifi':
+                        valorExtras += area * 12;
+                        break;
+                    case 'suporte':
+                        valorExtras += valorBase * 0.15; // 15% do valor base
+                        break;
+                }
+            });
+            
+            // Aplicar ajuste baseado no fornecimento
+            let valorTotal;
+            
+            if (fornecimento === 'completo') {
+                // Para Turnkey: mão de obra + materiais calculados separadamente
+                let totalMateriais = 0;
+                
+                if (projectType === 'cftv') {
+                    // Materiais para CFTV
+                    const custoCabos = pontos * 25; // R$ 25 por câmera em cabos
+                    const custoConectores = pontos * 12; // R$ 12 por câmera em conectores
+                    const custoCameras = pontos * 350; // R$ 350 por câmera
+                    const custoNVR = Math.ceil(pontos / 16) * 2500; // R$ 2.500 por NVR (16 canais)
+                    const custoHD = Math.ceil(pontos / 8) * 450; // R$ 450 por HD (para cada 8 câmeras)
+                    const custoInfraestrutura = area * 8; // R$ 8 por m²
+                    
+                    totalMateriais = custoCabos + custoConectores + custoCameras + custoNVR + custoHD + custoInfraestrutura;
+                } else {
+                    // Materiais para Cabeamento/Rede
+                    const precoCaboPorMetro = {
+                        'cat5e': 2.80,
+                        'cat6': 3.80,
+                        'cat6a': 5.20
+                    };
+                    const metrosPorPonto = 35;
+                    const totalMetros = pontos * metrosPorPonto;
+                    const custoCabos = totalMetros * precoCaboPorMetro[categoria];
+                    const custoConectores = pontos * 15;
+                    const custoPatchPanels = Math.ceil(pontos / 24) * 450;
+                    const custoSwitches = Math.ceil(pontos / 48) * 2800;
+                    const custoInfraestrutura = area * 8;
+                    
+                    totalMateriais = custoCabos + custoConectores + custoPatchPanels + custoSwitches + custoInfraestrutura;
+                }
+                
+                valorTotal = (valorBase + valorExtras) + totalMateriais;
+            } else {
+                // Para outros modelos: aplicar multiplicador
+                const multiplicadorFornecimento = {
+                    'hibrido': 0.8,      // 20% desconto (sem alguns equipamentos)
+                    'cliente': 0.6       // 40% do valor (só mão de obra + básicos)
+                };
+                valorTotal = (valorBase + valorExtras) * multiplicadorFornecimento[fornecimento];
+            }
+            const valorMinimo = valorTotal * 0.85;
+            const valorMaximo = valorTotal * 1.15;
+            
+            // Exibir resultados
+            document.getElementById('valorTotal').textContent = 
+                'R$ ' + valorTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+            
+            document.getElementById('faixaValor').textContent = 
+                `Faixa estimada: R$ ${valorMinimo.toLocaleString('pt-BR', {minimumFractionDigits: 2})} - R$ ${valorMaximo.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            
+            // Breakdown detalhado
+            let itemName = 'pontos de rede';
+            if (projectType === 'cftv') {
+                itemName = 'câmeras';
+            } else if (projectType === 'wifi') {
+                itemName = 'access points';
+            } else if (projectType === 'fibra') {
+                itemName = 'pontos de fibra';
+            }
+            
+            // Calcular breakdown detalhado de materiais
+            let breakdown = `
+                <div>• ${pontos} ${itemName}: R$ ${valorBase.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+            `;
+            
+            if (valorExtras > 0) {
+                breakdown += `<div>• Serviços adicionais: R$ ${valorExtras.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>`;
+            }
+            
+            // Breakdown detalhado para projeto completo (Turnkey)
+            if (fornecimento === 'completo') {
+                // Valor da mão de obra é o valor base (sem os materiais extras)
+                const maoDeObraCalculada = (valorBase + valorExtras);
+                
+                if (projectType === 'cftv') {
+                    // Breakdown para CFTV
+                    const custoCabos = pontos * 25;
+                    const custoConectores = pontos * 12;
+                    const custoCameras = pontos * 350;
+                    const custoNVR = Math.ceil(pontos / 16) * 2500;
+                    const custoHD = Math.ceil(pontos / 8) * 450;
+                    const custoInfraestrutura = area * 8;
+                    const totalMateriais = custoCabos + custoConectores + custoCameras + custoNVR + custoHD + custoInfraestrutura;
+                    
+                    breakdown += `
+                        <hr style="margin: 15px 0;">
+                        <div style="color: #495057; font-weight: bold;">📋 Breakdown de Materiais e Equipamentos CFTV:</div>
+                        <div style="margin-left: 15px; font-size: 0.9rem;">
+                            <div>• Cabos coaxiais/UTP: R$ ${custoCabos.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                            <div>• Conectores e acessórios: R$ ${custoConectores.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                            <div>• Câmeras IP (${pontos}x): R$ ${custoCameras.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                            <div>• NVR/DVR (${Math.ceil(pontos / 16)}x 16 canais): R$ ${custoNVR.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                            <div>• HD para gravação (${Math.ceil(pontos / 8)}x): R$ ${custoHD.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                            <div>• Infraestrutura (${area}m²): R$ ${custoInfraestrutura.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                            <div style="border-top: 1px solid #dee2e6; padding-top: 8px; margin-top: 8px;">
+                                <strong>Total Materiais: R$ ${totalMateriais.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong>
+                            </div>
+                            <div><strong>Mão de obra e serviços: R$ ${maoDeObraCalculada.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong></div>
+                            <div style="border-top: 1px solid #dee2e6; padding-top: 8px; margin-top: 8px; color: #007bff;">
+                                <strong>TOTAL PROJETO: R$ ${valorTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Breakdown para Cabeamento/Rede
+                    const precoCaboPorMetro = {
+                        'cat5e': 2.80,
+                        'cat6': 3.80,
+                        'cat6a': 5.20
+                    };
+                    const metrosPorPonto = 35;
+                    const totalMetros = pontos * metrosPorPonto;
+                    const materiaisCabos = totalMetros * precoCaboPorMetro[categoria];
+                    const materiaisConectores = pontos * 15;
+                    const patchPanels = Math.ceil(pontos / 24) * 450;
+                    const switches = Math.ceil(pontos / 48) * 2800;
+                    const infraestrutura = area * 8;
+                    const totalMateriais = materiaisCabos + materiaisConectores + patchPanels + switches + infraestrutura;
+                    
+                    breakdown += `
+                        <hr style="margin: 15px 0;">
+                        <div style="color: #495057; font-weight: bold;">📋 Breakdown de Materiais e Equipamentos:</div>
+                        <div style="margin-left: 15px; font-size: 0.9rem;">
+                            <div>• Cabos UTP (${totalMetros}m): R$ ${materiaisCabos.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                            <div>• Conectores e acessórios: R$ ${materiaisConectores.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                            <div>• Patch panels (${Math.ceil(pontos / 24)}x): R$ ${patchPanels.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                            <div>• Switches (${Math.ceil(pontos / 48)}x): R$ ${switches.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                            <div>• Infraestrutura (${area}m²): R$ ${infraestrutura.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                            <div style="border-top: 1px solid #dee2e6; padding-top: 8px; margin-top: 8px;">
+                                <strong>Total Materiais: R$ ${totalMateriais.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong>
+                            </div>
+                            <div><strong>Mão de obra e serviços: R$ ${maoDeObraCalculada.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong></div>
+                            <div style="border-top: 1px solid #dee2e6; padding-top: 8px; margin-top: 8px; color: #007bff;">
+                                <strong>TOTAL PROJETO: R$ ${valorTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong>
+                            </div>
+                        </div>
+                    `;
+                }
+                breakdown += `<div style="color: #6c757d; margin-top: 10px;"><strong>Projeto completo (Turnkey): materiais + mão de obra + gestão</strong></div>`;
+            } else if (fornecimento === 'cliente') {
+                breakdown += `<div style="color: #28a745; font-weight: bold;">• Mão de obra + materiais básicos (sem equipamentos ativos)</div>`;
+            } else if (fornecimento === 'hibrido') {
+                breakdown += `<div style="color: #17a2b8; font-weight: bold;">• Modelo híbrido (sem equipamentos ativos)</div>`;
+            }
+            
+            document.getElementById('breakdown').innerHTML = breakdown;
+            document.getElementById('resultados').style.display = 'block';
+            
+            // Rolar para os resultados
+            document.getElementById('resultados').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
