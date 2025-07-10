@@ -1,6 +1,7 @@
 # RC Suporte - Site Corporativo
 
 Site corporativo desenvolvido para empresa especializada em cabeamento estruturado e sistemas de câmeras.
+Usando Vibe Code, gerencio e estudo ao mesmo tempo que uso a I.A no desenvolvimento.
 
 ## 🚀 Funcionalidades Implementadas
 
